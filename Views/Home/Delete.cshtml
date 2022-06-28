@@ -1,0 +1,39 @@
+﻿@model Company.Models.Entities.Employee
+
+@{
+    ViewData["Title"] = "Delete";
+}
+ 
+<div>
+    <dl class="dl-horizontal">
+        <dt>Name</dt>
+        <dd>@Html.DisplayFor(model => model.Name)</dd>
+
+        <dt>Surname</dt>
+        <dd>@Html.DisplayFor(model => model.Surname)</dd>
+
+        <dt>Patronymic</dt>
+        <dd>@Html.DisplayFor(model => model.Patronymic)</dd>
+       
+        <dt>Phone</dt>
+        <dd>@Html.DisplayFor(model => model.Phone)</dd>
+        
+        <dt>Birthdate</dt>
+        <dd>@Model.Birthdate.ToShortDateString()</dd>
+
+        <dt>Department</dt>
+        <dd>@Html.DisplayFor(model => model.Department.Name)</dd>
+
+        <dt>Position</dt>
+        <dd>@Html.DisplayFor(model => model.Position.Name)</dd>
+    </dl>
+ 
+    <div>
+        <form asp-controller="Home" asp-action="Delete" method="post">
+            <div class="form-group">
+                <input type="submit" class="btn btn-danger" value="Delete" />
+                <a class="btn btn-primary" asp-action="Index">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>

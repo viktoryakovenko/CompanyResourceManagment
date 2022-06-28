@@ -1,0 +1,129 @@
+﻿@model IndexViewModel
+@addTagHelper *, Company
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row" style="align-items: flex-end;">
+    <h2>Employees</h2>
+    <a class="fs-4" style="margin-left: 15px" asp-action="Create">
+        Add employee
+    </a>
+</div>
+<hr />
+
+<div class="manage-group-filters right sort" style="margin-right: 15px;">
+    <form method="get">
+        <div class="form-group row" style="align-items: center;">
+            <div class="col-md-4">
+                <div class="row">
+                    <label for="name" class="col-sm-3 col-form-label">Name:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" placeholder="Name" id="name" name="name" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="row">
+                    <label for="position" class="col-sm-4 col-form-label">Position:</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" id="position" name="position" asp-items="Model.FilterViewModel.Positions"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="row">
+                    <label for="department" class="col-sm-4 col-form-label">Department:</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" id="department" name="department" asp-items="Model.FilterViewModel.Departments"></select>
+                    </div>
+                </div>
+            </div>
+            <input type="submit" value="Search" class="col-md-2 btn btn-light border border-primary" />
+        </div>
+    </form>
+</div>
+
+@{
+    if (Model.Employees.Any())
+    {
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>
+                            <a class="text-decoration-none text-reset" asp-action="Index" asp-route-sortOrder="@(Model.SortViewModel.NameSort)"
+                                                    asp-route-name="@(Model.FilterViewModel.SelectedName)"
+                                                    asp-route-department="@(Model.FilterViewModel.SelectedDepartment)"
+                                                    asp-route-position="@(Model.FilterViewModel.SelectedPosition)">Name 
+                                <span class="glyphicon glyphicon-sort"></span>
+                            </a>    
+                        </th>
+                        <th>
+                            <a class="text-decoration-none text-reset" asp-action="Index" asp-route-sortOrder="@(Model.SortViewModel.SurnameSort)"
+                                              asp-route-name="@(Model.FilterViewModel.SelectedName)"
+                                              asp-route-department="@(Model.FilterViewModel.SelectedDepartment)"
+                                              asp-route-position="@(Model.FilterViewModel.SelectedPosition)">Surname
+                                <span class="glyphicon glyphicon-sort"></span>
+                            </a>
+                        </th>
+                        <th>
+                            Patronymic
+                        </th>
+                        <th>
+                            Phone
+                        </th>
+                        <th>
+                            <a class="text-decoration-none text-reset" asp-action="Index" asp-route-sortOrder="@(Model.SortViewModel.AgeSort)"
+                                              asp-route-name="@(Model.FilterViewModel.SelectedName)"
+                                              asp-route-department="@(Model.FilterViewModel.SelectedDepartment)"
+                                              asp-route-position="@(Model.FilterViewModel.SelectedPosition)">Birthdate
+                                <span class="glyphicon glyphicon-sort"></span>
+                            </a>
+                        </th>
+                        <th>
+                            <a class="text-decoration-none text-reset" asp-action="Index" asp-route-sortOrder="@(Model.SortViewModel.DepartmentSort)"
+                                              asp-route-name="@(Model.FilterViewModel.SelectedName)"
+                                              asp-route-department="@(Model.FilterViewModel.SelectedDepartment)"
+                                              asp-route-position="@(Model.FilterViewModel.SelectedPosition)">Department
+                                <span class="glyphicon glyphicon-sort"></span>
+                            </a>
+                        </th>
+                        <th>
+                            Position
+                        </th>
+                        <th>
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var employee in Model.Employees)
+            {
+                    <tr>
+                        <td>@employee.Name</td>
+                        <td>@employee.Surname</td>
+                        <td>@employee.Patronymic</td>
+                        <td>@employee.Phone</td>
+                        <td>@employee.Birthdate.ToShortDateString()</td>
+                        <td>@employee.Department.Name</td>
+                        <td>@employee.Position.Name</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@employee.Id">Edit</a> |
+                            <a asp-action="Delete" asp-route-id="@employee.Id">Delete</a>
+                        </td>
+                    </tr>
+            }
+                </tbody>
+    </table>
+    }
+    else
+    {
+    <h3>Nothing found!</h3>
+    }
+}
+
+<page-link page-model="Model.PageViewModel" page-action="Index"
+           page-url-name="@(Model.FilterViewModel.SelectedName)"
+           page-url-department="@(Model.FilterViewModel.SelectedDepartment)"
+           page-url-position="@(Model.FilterViewModel.SelectedPosition)"
+           page-url-sortorder="@(Model.SortViewModel.Current)"></page-link>
